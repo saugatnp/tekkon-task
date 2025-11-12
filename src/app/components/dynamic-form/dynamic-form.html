@@ -1,4 +1,30 @@
-<div class="dynamic-form">
-  <h3 class="section-title">Form Panel</h3>
-  <p class="empty-message">Form UI will be implemented in the next phase.</p>
-</div>
+<form [formGroup]="form()" class="dynamic-form">
+  <div class="form-section">
+    <h3>Basic Info</h3>
+    <div class="field">
+      <label>Project Name *</label>
+      <input type="text" formControlName="name" placeholder="Enter name">
+      @if (form().get('name')?.invalid && form().get('name')?.touched) {
+        <small class="error">Name required (min 3 chars)</small>
+      }
+    </div>
+
+    <div class="field">
+      <label>Description</label>
+      <textarea formControlName="description" rows="3" placeholder="Enter description"></textarea>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Tags</h3>
+    <div formArrayName="tags">
+      @for (t of (form().get('tags')?.value || []); let i = $index; track i) {
+        <div class="tag-row">
+          <input [formControlName]="i" placeholder="Tag">
+        </div>
+      } @empty {
+        <p class="empty">No tags yet.</p>
+      }
+    </div>
+  </div>
+</form>

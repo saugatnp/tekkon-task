@@ -1,15 +1,20 @@
-import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, model, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-json-editor',
-  imports: [],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule],
   templateUrl: './json-editor.html',
-  styleUrl: './json-editor.scss',
+  styleUrls: ['./json-editor.scss']
 })
 export class JsonEditor {
-  content = signal<string>('');
+  jsonContent = model<string>('');
+  jsonChange = output<string>();
 
-  onChange(value: string) {
-    this.content.set(value);
+  onInput(value: string) {
+    this.jsonContent.set(value);
+    this.jsonChange.emit(value);
   }
 }

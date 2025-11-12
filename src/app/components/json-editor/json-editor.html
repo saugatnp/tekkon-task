@@ -1,13 +1,9 @@
 <div class="json-editor-container">
-  <div class="editor-header">
-    <h3>JSON Panel</h3>
-  </div>
+    <div class="editor-header">
+        <h3>JSON Panel</h3>
+    </div>
 
-  <textarea
-    class="json-textarea"
-    [value]="content()"
-    (input)="onChange(($any($event.target)).value)"
-    placeholder="JSON will go here..."
-    spellcheck="false">
-  </textarea>
+    <textarea class="json-textarea" [value]="jsonContent()" (input)="onInput(($any($event.target)).value)"
+        placeholder="Edit JSON here..." spellcheck="false">
+</textarea>
 </div>
