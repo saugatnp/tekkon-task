@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { AppSchema, Member } from '../models/form.model';
-import { CustomValidators } from '../validators/form.validator';
+import {inject, Injectable} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AppSchema, Member} from '../models/form.model';
+import {CustomValidators} from '../validators/form.validator';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,10 @@ export class Form {
       settings: this.fb.group({
         notifications: [data.settings.notifications],
         theme: [data.settings.theme, [CustomValidators.allowedValues(['light', 'dark', 'system'])]],
-        refreshInterval: [data.settings.refreshInterval, [Validators.required, CustomValidators.positiveNumber()]]
+        refreshInterval: [
+          data.settings.refreshInterval,
+          [Validators.required, CustomValidators.positiveNumber()]
+        ]
       }),
       members: this.fb.array(data.members.map(m => this.createMemberForm(m)))
     });
@@ -36,11 +39,24 @@ export class Form {
     return form.get('tags') as FormArray;
   }
 
-  addTag(form: FormGroup): void {
-    this.getTagsArray(form).push(this.fb.control(''));
+  getMembersArray(form: FormGroup): FormArray {
+    return form.get('members') as FormArray;
   }
 
-  removeTag(form: FormGroup, index: number): void {
-    this.getTagsArray(form).removeAt(index);
+  addTag(tags: FormArray): void {
+    tags.push(this.fb.control(''));
+  }
+
+  removeTag(tags: FormArray, index: number): void {
+    tags.removeAt(index);
+  }
+
+  addMember(members: FormArray): void {
+    const member: Member = { id: Date.now(), name: '', role: 'User' };
+    members.push(this.createMemberForm(member));
+  }
+
+  removeMember(members: FormArray, index: number): void {
+    members.removeAt(index);
   }
 }

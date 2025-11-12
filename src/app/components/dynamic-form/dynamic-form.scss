@@ -1,30 +1,105 @@
 .dynamic-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-}
-.form-section {
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e0e0e0;
-}
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-input, textarea {
-  padding: 8px;
-  border: 1px solid #bbb;
-  border-radius: 4px;
+  gap: 28px;
   font-size: 14px;
 }
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid #e4e4e4;
+  padding-bottom: 16px;
+
+  &:last-of-type {
+    border: none;
+    padding-bottom: 0;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-weight: 500;
+
+    input,
+    textarea,
+    select {
+      padding: 8px;
+      border: 1px solid #c9c9c9;
+      border-radius: 4px;
+      font: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vertical-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row,
+.member-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+
+  input,
+  select {
+    flex: 1;
+  }
+}
+
+.member-row select {
+  max-width: 140px;
+}
+
+.row button,
+.member-row button {
+  flex: 0 0 auto;
+  margin-top: 4px;
+}
+
 .error {
+  margin: 0;
   color: #d32f2f;
   font-size: 12px;
 }
+
 .empty {
+  margin: 0;
   font-size: 12px;
   font-style: italic;
   color: #666;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.row.space {
+  justify-content: space-between;
+  span {
+    font-weight: 500;
+  }
 }

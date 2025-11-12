@@ -15,6 +15,27 @@ export class JsonUtils {
     }
   }
 
+  static validate(data: any, requiredFields: string[]): { valid: boolean; missingFields: string[] } {
+    const missingFields = requiredFields.filter(field => {
+      const keys = field.split('.');
+      let current = data;
+
+      for (const key of keys) {
+        if (current === null || current === undefined || !(key in current)) {
+          return true;
+        }
+        current = current[key];
+      }
+
+      return false;
+    });
+
+    return {
+      valid: missingFields.length === 0,
+      missingFields
+    };
+  }
+
   static hasRequiredKeys(obj: any, keys: string[]): boolean {
     return keys.every(k => k.split('.').reduce((cur, part) => (cur && part in cur) ? cur[part] : undefined, obj) !== undefined);
   }

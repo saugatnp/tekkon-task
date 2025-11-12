@@ -1,30 +1,99 @@
 <form [formGroup]="form()" class="dynamic-form">
   <div class="form-section">
     <h3>Basic Info</h3>
-    <div class="field">
-      <label>Project Name *</label>
-      <input type="text" formControlName="name" placeholder="Enter name">
-      @if (form().get('name')?.invalid && form().get('name')?.touched) {
-        <small class="error">Name required (min 3 chars)</small>
-      }
-    </div>
-
-    <div class="field">
-      <label>Description</label>
-      <textarea formControlName="description" rows="3" placeholder="Enter description"></textarea>
-    </div>
+    <label>
+      <span>Name *</span>
+      <input type="text" formControlName="name" />
+    </label>
+    @if (nameControl().invalid && nameControl().touched) {
+      <p class="error">Name is required (min 3 chars)</p>
+    }
+    <label>
+      <span>Description</span>
+      <textarea rows="3" formControlName="description"></textarea>
+    </label>
   </div>
 
   <div class="form-section">
-    <h3>Tags</h3>
-    <div formArrayName="tags">
-      @for (t of (form().get('tags')?.value || []); let i = $index; track i) {
-        <div class="tag-row">
-          <input [formControlName]="i" placeholder="Tag">
+    <div class="section-header">
+      <h3>Tags</h3>
+      <button mat-raised-button color="primary" type="button" (click)="addTag.emit()">
+        <mat-icon>add</mat-icon>
+        Add Tag
+      </button>
+    </div>
+    <div formArrayName="tags" class="vertical-list">
+      @for (ctrl of tagsArray().controls; let i = $index; track i) {
+        <div class="row">
+          <input [formControlName]="i" placeholder="Tag" />
+          <button mat-icon-button color="warn" type="button" (click)="removeTag.emit(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
       } @empty {
         <p class="empty">No tags yet.</p>
       }
     </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Settings</h3>
+    <div [formGroup]="settingsGroup()">
+      <label class="row space">
+        <span>Notifications</span>
+        <mat-slide-toggle formControlName="notifications" color="primary"></mat-slide-toggle>
+      </label>
+
+      <label>
+        <span>Theme</span>
+        <select formControlName="theme">
+          @for (opt of themeOptions(); track opt) {
+            <option [value]="opt">{{ opt }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>Refresh Interval (s) *</span>
+        <input type="number" formControlName="refreshInterval" />
+      </label>
+      @if (settingsGroup().get('refreshInterval')?.invalid && settingsGroup().get('refreshInterval')?.touched) {
+        <p class="error">Must be positive</p>
+      }
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="section-header">
+      <h3>Members</h3>
+      <button mat-raised-button color="primary" type="button" (click)="addMember.emit()">
+        <mat-icon>person_add</mat-icon>
+        Add Member
+      </button>
+    </div>
+    <div formArrayName="members" class="vertical-list">
+      @for (m of membersArray().controls; let i = $index; track i) {
+        <div class="member-row" [formGroupName]="i">
+          <input [formControlName]="'name'" placeholder="Name *" />
+          <select formControlName="role">
+            @for (r of roleOptions(); track r) {
+              <option [value]="r">{{ r }}</option>
+            }
+          </select>
+          <button mat-icon-button color="warn" type="button" (click)="removeMember.emit(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      } @empty {
+        <p class="empty">No members yet.</p>
+      }
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" type="button" (click)="resetForm.emit()">
+      <mat-icon>refresh</mat-icon>
+      Reset
+    </button>
   </div>
 </form>

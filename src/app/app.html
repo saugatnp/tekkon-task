@@ -5,13 +5,20 @@
 
   <main class="app-main">
     <div class="form-panel">
-      <app-dynamic-form [form]="form()"></app-dynamic-form>
+      <app-dynamic-form
+        [form]="form()"
+        [themeOptions]="themeOptions"
+        [roleOptions]="roleOptions"
+        (addTag)="addTag()"
+        (removeTag)="removeTag($event)"
+        (addMember)="addMember()"
+        (removeMember)="removeMember($event)"
+        (resetForm)="resetForm()">
+      </app-dynamic-form>
     </div>
+
     <div class="json-panel">
-      <app-json-editor
-        [(jsonContent)]="jsonOutput"
-        (jsonChange)="onJsonInput($event)">
-      </app-json-editor>
+      <app-json-editor></app-json-editor>
     </div>
   </main>
 </div>
