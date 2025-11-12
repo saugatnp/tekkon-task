@@ -1,1 +1,13 @@
-<p>json-editor works!</p>
+<div class="json-editor-container">
+  <div class="editor-header">
+    <h3>JSON Panel</h3>
+  </div>
+
+  <textarea
+    class="json-textarea"
+    [value]="content()"
+    (input)="onChange(($any($event.target)).value)"
+    placeholder="JSON will go here..."
+    spellcheck="false">
+  </textarea>
+</div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-json-editor',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './json-editor.scss',
 })
 export class JsonEditor {
+  content = signal<string>('');
 
+  onChange(value: string) {
+    this.content.set(value);
+  }
 }
