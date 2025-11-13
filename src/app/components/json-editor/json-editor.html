@@ -1,6 +1,14 @@
 <div class="json-editor-container">
     <div class="editor-header">
         <h3>JSON Panel</h3>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="formatJson()"
+        [disabled]="!isValidJson()">
+        <mat-icon>auto_fix_high</mat-icon>
+        Format JSON
+      </button>
     </div>
 
     <textarea class="json-textarea" [value]="jsonContent()" (input)="onInput(($any($event.target)).value)"
