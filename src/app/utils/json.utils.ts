@@ -39,4 +39,8 @@ export class JsonUtils {
   static hasRequiredKeys(obj: any, keys: string[]): boolean {
     return keys.every(k => k.split('.').reduce((cur, part) => (cur && part in cur) ? cur[part] : undefined, obj) !== undefined);
   }
+
+  static equals(obj1: any, obj2: any): boolean {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+  }
 }
