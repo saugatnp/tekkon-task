@@ -1,1 +1,24 @@
-<p>form-field works!</p>
+ <mat-form-field appearance="outline" class="w-full">
+    <mat-label>
+      {{ label() }}
+    </mat-label>
+
+    @if (type() === 'text' || type() === 'number') {
+      <input
+        matInput
+        [type]="type()"
+        [formControl]="formControl()"
+        [placeholder]="placeholder()">
+    }
+
+    @if (type() === 'textarea') {
+      <textarea
+        matInput
+        [formControl]="formControl()"
+        [rows]="3"
+        [placeholder]="placeholder()">
+      </textarea>
+    }
+
+  </mat-form-field>
+
