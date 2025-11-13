@@ -1,17 +1,36 @@
 <div class="json-editor-container">
-    <div class="editor-header">
-        <h3>JSON Panel</h3>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="formatJson()"
-        [disabled]="!isValidJson()">
-        <mat-icon>auto_fix_high</mat-icon>
-        Format JSON
-      </button>
-    </div>
+  <div class="editor-header">
+    <h3>JSON Output</h3>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="formatJson()"
+      [disabled]="!isValidJson()">
+      <mat-icon>auto_fix_high</mat-icon>
+      Format JSON
+    </button>
+  </div>
 
-    <textarea class="json-textarea" [value]="jsonContent()" (input)="onInput(($any($event.target)).value)"
-        placeholder="Edit JSON here..." spellcheck="false">
-</textarea>
+  <textarea
+    class="json-textarea"
+    [value]="jsonContent()"
+    (input)="onJsonChange($any($event.target).value)"
+    placeholder="Your JSON output will appear here..."
+    spellcheck="false">
+  </textarea>
+
+  <div class="status-bar">
+    @if (isValidJson()) {
+      <span class="status-valid">
+        <mat-icon>check_circle</mat-icon>
+        Valid JSON
+      </span>
+    } @else if (validationError()) {
+      <span class="status-error">
+        <mat-icon>error</mat-icon>
+        {{ validationError() }}
+      </span>
+    }
+  </div>
 </div>
+

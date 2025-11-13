@@ -34,12 +34,25 @@ export class DynamicForm {
   removeMember = output<number>();
   resetForm = output<void>();
 
-  tagsArray = computed(() => this.form().get('tags') as FormArray);
-  membersArray = computed(() => this.form().get('members') as FormArray);
-  settingsGroup = computed(() => this.form().get('settings') as FormGroup);
+  readonly tagsArray = computed((): FormArray => {
+    return this.form().get('tags') as FormArray;
+  });
 
-  nameControl = computed(() => this.form().get('name')!);
-  descriptionControl = computed(() => this.form().get('description')!);
+  readonly membersArray = computed((): FormArray => {
+    return this.form().get('members') as FormArray;
+  });
+
+  readonly nameControl = computed((): AbstractControl => {
+    return this.form().get('name')!;
+  });
+
+  readonly descriptionControl = computed((): AbstractControl => {
+    return this.form().get('description')!;
+  });
+
+  readonly settingsGroup = computed((): FormGroup => {
+    return this.form().get('settings') as FormGroup;
+  });
 
   getMemberNameControl(ctrl: AbstractControl) {
     return ctrl.get('name')!;

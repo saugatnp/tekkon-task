@@ -1,9 +1,10 @@
+/* src/styles.scss */
 @use "tailwindcss";
 
-
+/* Import Angular Material pre-built theme */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-
+/* Custom styles */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -28,12 +29,66 @@ body {
   border-right: none;
 }
 
+/* Custom scrollbar for the whole app */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 /* Utility classes */
-.w-full { width: 100%; }
-.h-full { height: 100%; }
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+/* Material form field customization */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+/* Card animations */
+mat-card {
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+}
 
 /* Focus visible for accessibility */
 *:focus-visible {
   outline: 2px solid #3f51b5;
   outline-offset: 2px;
 }
+
+

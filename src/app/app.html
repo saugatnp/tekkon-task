@@ -5,6 +5,7 @@
 
   <main class="app-main">
     <div class="form-panel">
+
       <app-dynamic-form
         [form]="form()"
         [themeOptions]="themeOptions"
@@ -18,7 +19,11 @@
     </div>
 
     <div class="json-panel">
-      <app-json-editor></app-json-editor>
+      <app-json-editor
+        [(jsonContent)]="jsonOutput"
+        (jsonChange)="onJsonInput($event)">
+      </app-json-editor>
     </div>
   </main>
 </div>
+

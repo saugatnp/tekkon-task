@@ -1,20 +1,30 @@
 export class JsonUtils {
-  static parse<T = any>(json: string): { success: true; data: T } | { success: false; error: string } {
+  /**
+   * Safely parse JSON string
+   */
+  static parse<T = any>(jsonString: string): { success: true; data: T } | { success: false; error: string } {
     try {
-      return { success: true, data: JSON.parse(json) };
-    } catch (e: any) {
-      return { success: false, error: e?.message || 'Invalid JSON' };
+      const data = JSON.parse(jsonString);
+      return { success: true, data };
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Invalid JSON' };
     }
   }
 
+  /**
+   * Safely stringify object to JSON
+   */
   static stringify(data: any, pretty: boolean = true): string {
     try {
       return JSON.stringify(data, null, pretty ? 2 : 0);
-    } catch {
+    } catch (error) {
       return '';
     }
   }
 
+  /**
+   * Validate JSON structure against a schema
+   */
   static validate(data: any, requiredFields: string[]): { valid: boolean; missingFields: string[] } {
     const missingFields = requiredFields.filter(field => {
       const keys = field.split('.');
@@ -36,10 +46,9 @@ export class JsonUtils {
     };
   }
 
-  static hasRequiredKeys(obj: any, keys: string[]): boolean {
-    return keys.every(k => k.split('.').reduce((cur, part) => (cur && part in cur) ? cur[part] : undefined, obj) !== undefined);
-  }
-
+  /**
+   * Compare two objects for equality
+   */
   static equals(obj1: any, obj2: any): boolean {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
   }

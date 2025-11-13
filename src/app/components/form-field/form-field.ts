@@ -26,8 +26,9 @@ export class FormField {
   readonly label = input<string>('');
   public control = input.required<AbstractControl>();
   readonly type = input<'text' | 'textarea' | 'select' | 'number' | 'toggle'>('text');
-  readonly placeholder = input<string>('');
+  readonly required = input<boolean>(false);
   readonly options = input<string[]>([]);
+  readonly placeholder = input<string>('');
   readonly hint = input<string>('');
 
   readonly formControl = computed((): FormControl => this.control() as FormControl);
@@ -97,9 +98,11 @@ export class FormField {
     if (errors['minlength']) return `Minimum length is ${errors['minlength'].requiredLength}`;
     if (errors['maxlength']) return `Maximum length is ${errors['maxlength'].requiredLength}`;
     if (errors['positiveNumber']) return 'Must be a positive number';
+    if (errors['allowedValues']) {
+      const allowed = errors['allowedValues'].allowed.join(', ');
+      return `Must be one of: ${allowed}`;
+    }
 
     return 'Invalid input';
   });
-
-
 }

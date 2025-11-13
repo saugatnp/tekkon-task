@@ -1,19 +1,30 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class CustomValidators {
+  /**
+   * Validates that the number is positive (greater than 0)
+   */
   static positiveNumber(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const v = control.value;
-      if (v === null || v === undefined || v === '') return null;
-      return v > 0 ? null : { positiveNumber: true };
+      const value = control.value;
+      if (value === null || value === undefined || value === '') return null;
+      return value > 0 ? null : { positiveNumber: true };
     };
   }
 
-  static allowedValues(values: string[]): ValidatorFn {
+  /**
+   * Validates that the value is one of the allowed options
+   */
+  static allowedValues(allowedValues: string[]): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const v = control.value;
-      if (v === null || v === undefined || v === '') return null;
-      return values.includes(v) ? null : { allowedValues: { actual: v, allowed: values } };
+      const value = control.value;
+      if (value === null || value === undefined || value === '') return null;
+      return allowedValues.includes(value) ? null : {
+        allowedValues: {
+          actual: value,
+          allowed: allowedValues
+        }
+      };
     };
   }
 }

@@ -21,7 +21,14 @@ export class JsonEditor {
     return result.success;
   });
 
-  onInput(value: string) {
+  readonly validationError = computed((): string | null => {
+    const content = this.jsonContent();
+    if (!content.trim()) return null;
+    const result = JsonUtils.parse(content);
+    return result.success ? null : result.error;
+  });
+
+  onJsonChange(value: string): void {
     this.jsonContent.set(value);
     this.jsonChange.emit(value);
   }

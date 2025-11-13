@@ -3,31 +3,57 @@
   display: flex;
   flex-direction: column;
 }
+
 .app-header {
   background: #1976d2;
-  color: #fff;
-  padding: 16px;
+  color: white;
+  padding: 20px;
   text-align: center;
-  h1 { margin: 0 0 4px 0; font-size: 1.6rem; }
-  p { margin: 0; font-size: 0.9rem; opacity: 0.85; }
+
+  h1 {
+    margin: 0 0 8px 0;
+    font-size: 1.75rem;
+  }
+
+  p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
 }
+
 .app-main {
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 0;
+  overflow: hidden;
 }
+
 .form-panel {
-  padding: 20px;
-  background: #fafafa;
   border-right: 1px solid #e0e0e0;
-  overflow-y: auto;
-}
-.json-panel {
+  background: #fafafa;
   padding: 20px;
-  background: #fff;
   overflow-y: auto;
 }
-@media (max-width: 900px) {
-  .app-main { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
-  .form-panel { border-right: none; border-bottom: 1px solid #e0e0e0; }
+
+.json-panel {
+  background: white;
+  padding: 0;
+  overflow: hidden;
 }
+
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .app-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .form-panel {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+}
+
