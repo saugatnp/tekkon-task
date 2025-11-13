@@ -1,4 +1,9 @@
- <mat-form-field appearance="outline" class="w-full">
+@if (type() === 'toggle') {
+  <mat-slide-toggle [formControl]="formControl()" color="primary" class="w-full">
+    <span class="font-medium">{{ label() }}</span>
+  </mat-slide-toggle>
+} @else {
+  <mat-form-field appearance="outline" class="w-full">
     <mat-label>
       {{ label() }}
     </mat-label>
@@ -20,5 +25,24 @@
       </textarea>
     }
 
-  </mat-form-field>
+    @if (type() === 'select') {
+      <mat-select [formControl]="formControl()">
+        @for (option of options(); track option) {
+          <mat-option [value]="option">
+            <span class="capitalize">{{ option }}</span>
+          </mat-option>
+        }
+      </mat-select>
+    }
 
+    @if (hint() && !hasError()) {
+      <mat-hint>{{ hint() }}</mat-hint>
+    }
+
+    @if (hasError()) {
+      <mat-error>
+        {{ errorMessage() }}
+      </mat-error>
+    }
+  </mat-form-field>
+}
