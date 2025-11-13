@@ -1,59 +1,71 @@
-# TekkonTask
+# Tekkon task
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
+A simple Angular app that generates a reactive form from JSON and keeps them in sync.
 
-## Development server
-
-To start a local development server, run:
+## How to Run
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Then open http://localhost:4200
 
-## Code scaffolding
+## What It Does
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+**Core features:**
+- Dynamically builds a reactive form from the provided JSON schema
+- Edit the form and the JSON updates instantly
+- Paste new JSON and the form updates automatically
+- Add/remove tags and members
+- Validation:
+  - `name` is required (min 3 chars)
+  - `theme` must be "light", "dark", or "system"
+  - `refreshInterval` must be positive
 
-```bash
-ng generate component component-name
+**Bonus features I added:**
+- TypeScript types for the schema
+- Material UI dropdowns for theme/role selection
+- Toggle switch for notifications
+- LocalStorage persistence (survives page refresh)
+- Real-time JSON validation with error messages
+- The form builder is generic enough to work with other schemas
+
+## Sample JSON
+
+```json
+{
+  "name": "Crewmojo Demo",
+  "description": "Testing reactive form coding task",
+  "tags": ["angular", "forms", "json"],
+  "settings": {
+    "notifications": true,
+    "theme": "dark",
+    "refreshInterval": 30
+  },
+  "members": [
+    { "id": 1, "name": "Alice", "role": "Admin" },
+    { "id": 2, "name": "Bob", "role": "User" }
+  ]
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Design Decisions
 
-```bash
-ng generate --help
-```
+I went with Angular 20's new signals API for state management - it's cleaner than observables for this use case. All components are standalone following current best practices.
 
-## Building
+For the bi-directional sync:
+- Form to JSON: Used an `effect()` that watches form changes
+- JSON to Form: Parse the JSON and rebuild the form when valid
 
-To build the project run:
+I created custom validators (`positiveNumber`, `allowedValues`) that can be reused. The form builder service is separate so it could handle different schemas if needed.
 
-```bash
-ng build
-```
+## What I'd Improve
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+With more time I'd add:
+- Support for truly dynamic schemas (not just the hardcoded one)
+- Unit tests for the validators and form service
+- Better error messages
+- Import/export JSON files
+- Maybe an undo/redo feature
+- Detailed Comments
