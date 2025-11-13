@@ -8,7 +8,9 @@ import {CustomValidators} from '../validators/form.validator';
 })
 export class Form {
   private fb = inject(FormBuilder);
-  constructor() {}
+
+  constructor() {
+  }
 
   createFormFromSchema(data: AppSchema): FormGroup {
     const form = this.fb.group({
@@ -75,7 +77,7 @@ export class Form {
   }
 
   addMember(membersArray: FormArray): void {
-    const newMember = { id: Date.now(), name: '', role: 'User' as const };
+    const newMember = {id: Date.now(), name: '', role: 'User' as const};
     membersArray.push(this.createMemberForm(newMember));
   }
 

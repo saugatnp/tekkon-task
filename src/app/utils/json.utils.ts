@@ -5,9 +5,9 @@ export class JsonUtils {
   static parse<T = any>(jsonString: string): { success: true; data: T } | { success: false; error: string } {
     try {
       const data = JSON.parse(jsonString);
-      return { success: true, data };
+      return {success: true, data};
     } catch (error: any) {
-      return { success: false, error: error.message || 'Invalid JSON' };
+      return {success: false, error: error.message || 'Invalid JSON'};
     }
   }
 

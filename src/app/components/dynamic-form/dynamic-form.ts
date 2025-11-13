@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, computed, input, output} from '@angular/core';
 import {AbstractControl, FormArray, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
@@ -57,6 +57,7 @@ export class DynamicForm {
   getMemberNameControl(ctrl: AbstractControl) {
     return ctrl.get('name')!;
   }
+
   getMemberRoleControl(ctrl: AbstractControl) {
     return ctrl.get('role')!;
   }

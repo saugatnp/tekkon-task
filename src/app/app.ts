@@ -1,8 +1,8 @@
-import { Component, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { DynamicForm } from './components/dynamic-form/dynamic-form';
-import { JsonEditor } from './components/json-editor/json-editor';
+import {Component, effect, inject, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule, FormGroup} from '@angular/forms';
+import {DynamicForm} from './components/dynamic-form/dynamic-form';
+import {JsonEditor} from './components/json-editor/json-editor';
 import {Form} from './services/form';
 import {AppSchema} from './models/form.model';
 import {JsonUtils} from './utils/json.utils';
@@ -30,8 +30,8 @@ export class App {
       refreshInterval: 30
     },
     members: [
-      { id: 1, name: "Alice", role: "Admin" },
-      { id: 2, name: "Bob", role: "User" }
+      {id: 1, name: "Alice", role: "Admin"},
+      {id: 2, name: "Bob", role: "User"}
     ]
   };
 

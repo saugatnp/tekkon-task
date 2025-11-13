@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 export class CustomValidators {
   /**
@@ -8,7 +8,7 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
       if (value === null || value === undefined || value === '') return null;
-      return value > 0 ? null : { positiveNumber: true };
+      return value > 0 ? null : {positiveNumber: true};
     };
   }
 

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import {ChangeDetectionStrategy, Component, computed, model, output, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ChangeDetectionStrategy, Component, computed, model, output} from '@angular/core';
 import {JsonUtils} from '../../utils/json.utils';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
