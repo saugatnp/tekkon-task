@@ -1,17 +1,22 @@
 <form [formGroup]="form()" class="dynamic-form">
+
+  <!-- Basic Information Section -->
   <div class="form-section">
-    <h3>Basic Info</h3>
-    <label>
-      <span>Name *</span>
-      <input type="text" formControlName="name" />
-    </label>
-    @if (nameControl().invalid && nameControl().touched) {
-      <p class="error">Name is required (min 3 chars)</p>
-    }
-    <label>
-      <span>Description</span>
-      <textarea rows="3" formControlName="description"></textarea>
-    </label>
+    <h3 class="section-title">Basic Information</h3>
+    <div class="section-content">
+      <app-form-field
+        [label]="'Project Name'"
+        [control]="nameControl()"
+        type="text">
+      </app-form-field>
+
+      <app-form-field
+        [label]="'Description'"
+        [control]="descriptionControl()"
+        type="textarea"
+        [placeholder]="'Describe your project...'">
+      </app-form-field>
+    </div>
   </div>
 
   <div class="form-section">

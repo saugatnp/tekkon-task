@@ -5,6 +5,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSelectModule} from '@angular/material/select';
+import {FormField} from '../form-field/form-field';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -16,7 +17,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatButtonModule,
     MatIconModule,
     MatSlideToggleModule,
-    MatSelectModule
+    MatSelectModule,
+    FormField,
   ],
   templateUrl: './dynamic-form.html',
   styleUrls: ['./dynamic-form.scss']
