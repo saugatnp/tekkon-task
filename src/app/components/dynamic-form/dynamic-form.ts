@@ -41,10 +41,10 @@ export class DynamicForm {
   nameControl = computed(() => this.form().get('name')!);
   descriptionControl = computed(() => this.form().get('description')!);
 
-  getMemberName(ctrl: AbstractControl) {
+  getMemberNameControl(ctrl: AbstractControl) {
     return ctrl.get('name')!;
   }
-  getMemberRole(ctrl: AbstractControl) {
+  getMemberRoleControl(ctrl: AbstractControl) {
     return ctrl.get('role')!;
   }
 }
