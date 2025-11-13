@@ -1,10 +1,11 @@
-import {Component, computed, input, signal} from '@angular/core';
+import {Component, computed, DestroyRef, effect, inject, input, signal} from '@angular/core';
 import {AbstractControl, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-form-field',
@@ -20,6 +21,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
   styleUrl: './form-field.scss',
 })
 export class FormField {
+  private destroyRef = inject(DestroyRef);
 
   readonly label = input<string>('');
   public control = input.required<AbstractControl>();
@@ -44,7 +46,39 @@ export class FormField {
   });
 
   constructor() {
+    // Subscribe to control changes and update state signal
+    effect((onCleanup) => {
+      const ctrl = this.control();
+      if (ctrl) {
+        // Initial state
+        this.updateControlState();
 
+        // Subscribe to status and value changes with proper cleanup
+        const statusSub = ctrl.statusChanges
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => this.updateControlState());
+
+        const valueSub = ctrl.valueChanges
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => this.updateControlState());
+
+        // Cleanup subscriptions when effect re-runs
+        onCleanup(() => {
+          statusSub.unsubscribe();
+          valueSub.unsubscribe();
+        });
+      }
+    });
+  }
+
+  private updateControlState(): void {
+    const ctrl = this.control();
+    this.controlState.set({
+      touched: ctrl.touched,
+      dirty: ctrl.dirty,
+      errors: ctrl.errors,
+      value: ctrl.value
+    });
   }
 
   readonly hasError = computed((): boolean => {
