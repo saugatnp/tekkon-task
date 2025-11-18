@@ -56,11 +56,9 @@ export class FormField {
 
         // Subscribe to status and value changes with proper cleanup
         const statusSub = ctrl.statusChanges
-          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(() => this.updateControlState());
 
         const valueSub = ctrl.valueChanges
-          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(() => this.updateControlState());
 
         // Cleanup subscriptions when effect re-runs
@@ -73,6 +71,7 @@ export class FormField {
   }
 
   private updateControlState(): void {
+    console.log('Updating control state');
     const ctrl = this.control();
     this.controlState.set({
       touched: ctrl.touched,
