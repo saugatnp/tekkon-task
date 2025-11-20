@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, DestroyRef, effect, inject, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule, FormGroup} from '@angular/forms';
 import {DynamicForm} from './components/dynamic-form/dynamic-form';
@@ -8,6 +8,7 @@ import {AppSchema} from './models/form.model';
 import {JsonUtils} from './utils/json.utils';
 import {Localstorage} from './services/localstorage';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs';
 export class App {
   private formBuilderService = inject(Form);
   private localstorageService = inject(Localstorage);
+  private destroyRef = inject(DestroyRef);
 
   readonly defaultData: AppSchema = {
     name: "Crewmojo Demo",
@@ -43,17 +45,28 @@ export class App {
   jsonOutput = signal<string>('');
 
   constructor() {
+    this.loadPersistedData();
+
     // Effect to sync form with JSON output
     effect(() => {
-      const formValue = this.form().value;
-      this.jsonOutput.set(JsonUtils.stringify(formValue));
-    });
-  }
+      const currentForm = this.form();
+      const formValue = currentForm.value;
 
-  ngOnInit(): void {
-    this.loadPersistedData();
-    this.setupFormSubscription();
-    this.updateJsonOutput();
+      // Update JSON output
+      this.jsonOutput.set(JsonUtils.stringify(formValue));
+
+      // Set up subscription
+      currentForm.valueChanges.pipe(
+        debounceTime(300),
+        distinctUntilChanged((prev, curr) => JsonUtils.equals(prev, curr)),
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe(value => {
+        // Update JSON output
+        this.jsonOutput.set(JsonUtils.stringify(value));
+        // Save to localStorage
+        this.localstorageService.saveData(value);
+      });
+    });
   }
 
   private loadPersistedData(): void {
@@ -63,20 +76,6 @@ export class App {
     }
   }
 
-  private setupFormSubscription(): void {
-    this.form().valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged((prev, curr) => JsonUtils.equals(prev, curr))
-    ).subscribe(value => {
-      this.updateJsonOutput();
-      this.localstorageService.saveData(value);
-    });
-  }
-
-  private updateJsonOutput(): void {
-    const value = this.form().value;
-    this.jsonOutput.set(JsonUtils.stringify(value));
-  }
 
   onJsonInput(jsonString: string): void {
     const result = JsonUtils.parse<AppSchema>(jsonString);
@@ -88,7 +87,6 @@ export class App {
     if (this.isValidSchema(result.data)) {
       this.form.set(this.formBuilderService.createFormFromSchema(result.data));
       this.localstorageService.saveData(result.data);
-      this.setupFormSubscription();
     }
   }
 
@@ -135,7 +133,5 @@ export class App {
   resetForm(): void {
     this.form.set(this.formBuilderService.createFormFromSchema(this.defaultData));
     this.localstorageService.clearData();
-    this.setupFormSubscription();
-    this.updateJsonOutput();
   }
 }
