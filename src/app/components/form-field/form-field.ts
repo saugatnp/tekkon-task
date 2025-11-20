@@ -1,11 +1,11 @@
-import {Component, computed, DestroyRef, effect, inject, input, signal} from '@angular/core';
+import {Component, computed, effect, input, signal} from '@angular/core';
 import {AbstractControl, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import { debounceTime, merge } from 'rxjs';
 
 @Component({
   selector: 'app-form-field',
@@ -21,8 +21,6 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   styleUrl: './form-field.scss',
 })
 export class FormField {
-  private destroyRef = inject(DestroyRef);
-
   readonly label = input<string>('');
   public control = input.required<AbstractControl>();
   readonly type = input<'text' | 'textarea' | 'select' | 'number' | 'toggle'>('text');
@@ -54,24 +52,27 @@ export class FormField {
         // Initial state
         this.updateControlState();
 
-        // Subscribe to status and value changes with proper cleanup
-        const statusSub = ctrl.statusChanges
+        // Subscribe to status and value changes
+        // We merge both changes inorder to fire the updateControlState method only once
+        const statusAndValueChange = merge(
+          ctrl.statusChanges,
+          ctrl.valueChanges
+        ).pipe(
+          debounceTime(10)
+        );
+
+        const subscription = statusAndValueChange
           .subscribe(() => this.updateControlState());
 
-        const valueSub = ctrl.valueChanges
-          .subscribe(() => this.updateControlState());
-
-        // Cleanup subscriptions when effect re-runs
+        // Cleanup subscription when effect re-runs
         onCleanup(() => {
-          statusSub.unsubscribe();
-          valueSub.unsubscribe();
+          subscription.unsubscribe();
         });
       }
     });
   }
 
   private updateControlState(): void {
-    console.log('Updating control state');
     const ctrl = this.control();
     this.controlState.set({
       touched: ctrl.touched,
